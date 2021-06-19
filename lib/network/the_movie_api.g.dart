@@ -17,8 +17,7 @@ class _TheMovieApi implements TheMovieApi {
   String baseUrl;
 
   @override
-  Future<GetNowPlayingResponse> getNowPlayingMovies(
-      apiKey, language, page) async {
+  Future<MovieListResponse> getNowPlayingMovies(apiKey, language, page) async {
     ArgumentError.checkNotNull(apiKey, 'apiKey');
     ArgumentError.checkNotNull(language, 'language');
     ArgumentError.checkNotNull(page, 'page');
@@ -38,7 +37,182 @@ class _TheMovieApi implements TheMovieApi {
             extra: _extra,
             baseUrl: baseUrl),
         data: _data);
-    final value = GetNowPlayingResponse.fromJson(_result.data);
+    final value = MovieListResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<MovieListResponse> getPopularMovies(apiKey, language, page) async {
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
+    ArgumentError.checkNotNull(language, 'language');
+    ArgumentError.checkNotNull(page, 'page');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'language': language,
+      r'page': page
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>('/3/movie/popular',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = MovieListResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<MovieListResponse> getTopRatedMovies(apiKey, language, page) async {
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
+    ArgumentError.checkNotNull(language, 'language');
+    ArgumentError.checkNotNull(page, 'page');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'language': language,
+      r'page': page
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/3/movie/top_rated',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = MovieListResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<BestActorResponse> getActor(apiKey, language, page) async {
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
+    ArgumentError.checkNotNull(language, 'language');
+    ArgumentError.checkNotNull(page, 'page');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'language': language,
+      r'page': page
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/3/person/popular',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = BestActorResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<GenreResponse> getGenre(apiKey, language) async {
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
+    ArgumentError.checkNotNull(language, 'language');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'language': language
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/3/genre/movie/list',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = GenreResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<MovieListResponse> getMovieByGenreId(genreId, apiKey, language) async {
+    ArgumentError.checkNotNull(genreId, 'genreId');
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
+    ArgumentError.checkNotNull(language, 'language');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'with_genres': genreId,
+      r'api_key': apiKey,
+      r'language': language
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/3/discover/movie',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = MovieListResponse.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<MovieVO> getMovieDetails(movieId, apiKey, language, page) async {
+    ArgumentError.checkNotNull(movieId, 'movieId');
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
+    ArgumentError.checkNotNull(language, 'language');
+    ArgumentError.checkNotNull(page, 'page');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'language': language,
+      r'page': page
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/3/movie/$movieId',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = MovieVO.fromJson(_result.data);
+    return value;
+  }
+
+  @override
+  Future<GetCreditByMovieResponse> getCreditByMovie(
+      movieId, apiKey, language, page) async {
+    ArgumentError.checkNotNull(movieId, 'movieId');
+    ArgumentError.checkNotNull(apiKey, 'apiKey');
+    ArgumentError.checkNotNull(language, 'language');
+    ArgumentError.checkNotNull(page, 'page');
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{
+      r'api_key': apiKey,
+      r'language': language,
+      r'page': page
+    };
+    final _data = <String, dynamic>{};
+    final _result = await _dio.request<Map<String, dynamic>>(
+        '/3/movie/$movieId/credits',
+        queryParameters: queryParameters,
+        options: RequestOptions(
+            method: 'GET',
+            headers: <String, dynamic>{},
+            extra: _extra,
+            baseUrl: baseUrl),
+        data: _data);
+    final value = GetCreditByMovieResponse.fromJson(_result.data);
     return value;
   }
 }

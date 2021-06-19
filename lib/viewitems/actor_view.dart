@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:movie_app/data/vos/base_actor_vo.dart';
+import 'package:movie_app/network/api_constants.dart';
 import 'package:movie_app/resources/colors.dart';
 import 'package:movie_app/resources/dimens.dart';
 
 class ActorView extends StatelessWidget {
+  final BaseActorVO actor;
+
+  ActorView({
+    this.actor,
+  });
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -13,7 +21,9 @@ class ActorView extends StatelessWidget {
       child: Stack(
         children: [
           Positioned.fill(
-            child: ActorImageView(),
+            child: ActorImageView(
+              imageURL: actor.profilePath,
+            ),
           ),
           Padding(
             padding: const EdgeInsets.all(
@@ -26,7 +36,10 @@ class ActorView extends StatelessWidget {
           ),
           Align(
             alignment: Alignment.bottomCenter,
-            child: ActorNameAndLikeView(),
+            child: ActorNameAndLikeView(
+              name: actor.name,
+              like: 56706,
+            ),
           ),
         ],
       ),
@@ -35,14 +48,16 @@ class ActorView extends StatelessWidget {
 }
 
 class ActorImageView extends StatelessWidget {
-  const ActorImageView({
-    Key key,
-  }) : super(key: key);
+  final String imageURL;
+
+  ActorImageView({
+    this.imageURL,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Image.network(
-      "https://i.pinimg.com/originals/0a/f8/5b/0af85ba23c449bff92eae27e9cc4bd94.jpg",
+      "$IMAGE_BASE_URL$imageURL",
       fit: BoxFit.cover,
     );
   }
@@ -63,9 +78,13 @@ class FavoriteButtonView extends StatelessWidget {
 }
 
 class ActorNameAndLikeView extends StatelessWidget {
+  final String name;
+  final double like;
+
   const ActorNameAndLikeView({
-    Key key,
-  }) : super(key: key);
+    this.name,
+    this.like,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -79,7 +98,7 @@ class ActorNameAndLikeView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            "Leonardo DiCaprio",
+            name,
             style: TextStyle(
               fontSize: TEXT_REGULAR,
               color: Colors.white,
@@ -100,7 +119,7 @@ class ActorNameAndLikeView extends StatelessWidget {
                 width: MARGIN_MEDIUM,
               ),
               Text(
-                "YOU LIKE 13 MOVIES",
+                "YOU LIKE 13 MOVIES.",
                 style: TextStyle(
                   color: HOME_SCREEN_LIST_TITLE_COLOR,
                   fontWeight: FontWeight.bold,

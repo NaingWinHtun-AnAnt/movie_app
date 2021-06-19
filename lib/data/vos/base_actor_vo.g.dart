@@ -1,35 +1,35 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'date_vo.dart';
+part of 'base_actor_vo.dart';
 
 // **************************************************************************
 // TypeAdapterGenerator
 // **************************************************************************
 
-class DateVOAdapter extends TypeAdapter<DateVO> {
+class BaseActorVOAdapter extends TypeAdapter<BaseActorVO> {
   @override
-  final int typeId = 5;
+  final int typeId = 2;
 
   @override
-  DateVO read(BinaryReader reader) {
+  BaseActorVO read(BinaryReader reader) {
     final numOfFields = reader.readByte();
     final fields = <int, dynamic>{
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
-    return DateVO(
-      maximum: fields[0] as String,
-      minimum: fields[1] as String,
+    return BaseActorVO(
+      name: fields[11] as String,
+      profilePath: fields[12] as String,
     );
   }
 
   @override
-  void write(BinaryWriter writer, DateVO obj) {
+  void write(BinaryWriter writer, BaseActorVO obj) {
     writer
       ..writeByte(2)
-      ..writeByte(0)
-      ..write(obj.maximum)
-      ..writeByte(1)
-      ..write(obj.minimum);
+      ..writeByte(11)
+      ..write(obj.name)
+      ..writeByte(12)
+      ..write(obj.profilePath);
   }
 
   @override
@@ -38,7 +38,7 @@ class DateVOAdapter extends TypeAdapter<DateVO> {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is DateVOAdapter &&
+      other is BaseActorVOAdapter &&
           runtimeType == other.runtimeType &&
           typeId == other.typeId;
 }
@@ -47,14 +47,15 @@ class DateVOAdapter extends TypeAdapter<DateVO> {
 // JsonSerializableGenerator
 // **************************************************************************
 
-DateVO _$DateVOFromJson(Map<String, dynamic> json) {
-  return DateVO(
-    maximum: json['maximum'] as String,
-    minimum: json['minimum'] as String,
+BaseActorVO _$BaseActorVOFromJson(Map<String, dynamic> json) {
+  return BaseActorVO(
+    name: json['name'] as String,
+    profilePath: json['profile_path'] as String,
   );
 }
 
-Map<String, dynamic> _$DateVOToJson(DateVO instance) => <String, dynamic>{
-      'maximum': instance.maximum,
-      'minimum': instance.minimum,
+Map<String, dynamic> _$BaseActorVOToJson(BaseActorVO instance) =>
+    <String, dynamic>{
+      'name': instance.name,
+      'profile_path': instance.profilePath,
     };
