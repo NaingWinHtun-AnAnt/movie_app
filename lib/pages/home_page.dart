@@ -1,6 +1,7 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/models/movie_model_impl.dart';
+import 'package:movie_app/blocs/home_bloc.dart';
+import 'package:movie_app/data/vos/actor_vo.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/pages/movie_details_page.dart';
@@ -14,9 +15,21 @@ import 'package:movie_app/widgets/actors_and_creators_section_view.dart';
 import 'package:movie_app/widgets/see_more_text.dart';
 import 'package:movie_app/widgets/title_text.dart';
 import 'package:movie_app/widgets/title_text_with_see_more_text.dart';
-import 'package:scoped_model/scoped_model.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
+  @override
+  _HomePageState createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  HomeBloc _bloc = HomeBloc();
+
+  @override
+  void dispose() {
+    _bloc.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,69 +59,78 @@ class HomePage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              ScopedModelDescendant<MovieModelImpl>(
-                builder:
-                    (BuildContext context, Widget child, MovieModelImpl model) {
+              StreamBuilder(
+                stream: _bloc.mPopularStreamController.stream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<MovieVO>> snapshot) {
                   return BannerSectionView(
-                    model.mPopularMovieList,
+                    snapshot.data,
                   );
                 },
               ),
               SizedBox(height: MARGIN_LARGE),
-              ScopedModelDescendant<MovieModelImpl>(
-                builder:
-                    (BuildContext context, Widget child, MovieModelImpl model) {
+              StreamBuilder(
+                stream: _bloc.mNowPlayingStreamController.stream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<MovieVO>> snapshot) {
                   return BestPopularMoviesAndSerialsSectionView(
                     (movieId) => _navigateToMovieDetailScreen(
                       context,
                       movieId,
-                      model,
                     ),
-                    model.mNowPlayingMovieList,
+                    snapshot.data,
                   );
                 },
               ),
               SizedBox(height: MARGIN_LARGE),
               CheckMovieShowTimeSectionView(),
               SizedBox(height: MARGIN_LARGE),
-              ScopedModelDescendant<MovieModelImpl>(
-                builder:
-                    (BuildContext context, Widget child, MovieModelImpl model) {
-                  return GenreSectionView(
-                    (movieId) => _navigateToMovieDetailScreen(
-                      context,
-                      movieId,
-                      model,
-                    ),
-                    genreList: model.mGenreList,
-                    onTapGenre: (genreId) {
-                      model.getMovieListByGenreId(genreId.toString());
+              StreamBuilder(
+                stream: _bloc.mGenreStreamController.stream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<GenreVO>> genreSnapshot) {
+                  return StreamBuilder(
+                    stream: _bloc.mMovieListByGenreStreamController.stream,
+                    builder: (BuildContext context,
+                        AsyncSnapshot<List<MovieVO>> movieByGenreSnapshot) {
+                      return GenreSectionView(
+                        (movieId) => _navigateToMovieDetailScreen(
+                          context,
+                          movieId,
+                        ),
+                        genreList: genreSnapshot.data,
+                        onTapGenre: (genreId) {
+                          _bloc.getMovieListByGenre(genreId);
+                        },
+                        movieListByGenre: movieByGenreSnapshot.data,
+                      );
                     },
-                    movieListByGenre: model.mMovieListByGenre,
                   );
                 },
               ),
               SizedBox(
                 height: MARGIN_MEDIUM_2,
               ),
-              ScopedModelDescendant<MovieModelImpl>(
-                builder:
-                    (BuildContext context, Widget child, MovieModelImpl model) {
+              StreamBuilder(
+                stream: _bloc.mTopRatedStreamController.stream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<MovieVO>> snapshot) {
                   return ShowCasesSection(
-                    topRatedMovies: model.mTopRatedMovieList,
+                    topRatedMovies: snapshot.data,
                   );
                 },
               ),
               SizedBox(
                 height: MARGIN_LARGE,
               ),
-              ScopedModelDescendant<MovieModelImpl>(
-                builder:
-                    (BuildContext context, Widget child, MovieModelImpl model) {
+              StreamBuilder(
+                stream: _bloc.mActorStreamController.stream,
+                builder: (BuildContext context,
+                    AsyncSnapshot<List<ActorVO>> snapshot) {
                   return ActorsAndCreatorsSectionView(
                     BEST_ACTORS_TITLE,
                     BEST_ACTORS_SEE_MORE,
-                    actorList: model.mActors,
+                    actorList: snapshot.data,
                   );
                 },
               ),
@@ -122,16 +144,12 @@ class HomePage extends StatelessWidget {
     );
   }
 
-  void _navigateToMovieDetailScreen(
-      BuildContext context, int movieId, MovieModelImpl model) {
-    model.getMovieDetailById(movieId.toString());
-    model.getMovieDetailByIdFromDatabase(movieId);
-    model.getCreditByMovieId(movieId.toString());
-
+  void _navigateToMovieDetailScreen(BuildContext context, int movieId) {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) => MovieDetailsPage(
+          movieId: movieId,
         ),
       ),
     );
@@ -183,7 +201,7 @@ class GenreSectionView extends StatelessWidget {
             bottom: MARGIN_MEDIUM,
           ),
           child: HorizontalMovieListView(
-            (movieId) {
+                (movieId) {
               this.onTapMovie(movieId);
             },
             movieList: movieListByGenre,
@@ -304,7 +322,7 @@ class BestPopularMoviesAndSerialsSectionView extends StatelessWidget {
           height: MARGIN_MEDIUM_2,
         ),
         HorizontalMovieListView(
-          (movieId) => onTapMovie(movieId),
+              (movieId) => onTapMovie(movieId),
           movieList: mNowPlayingMovieList,
         ),
       ],
