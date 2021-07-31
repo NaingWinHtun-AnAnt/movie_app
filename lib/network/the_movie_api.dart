@@ -1,5 +1,4 @@
 import 'package:dio/dio.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/network/api_constants.dart';
 import 'package:movie_app/network/responses/best_actor_response.dart';

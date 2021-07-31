@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:movie_app/data/models/movie_model.dart';
 import 'package:movie_app/data/models/movie_model_impl.dart';
-import 'package:movie_app/data/vos/credit_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/network/api_constants.dart';
 import 'package:movie_app/resources/colors.dart';
@@ -11,117 +9,78 @@ import 'package:movie_app/widgets/actors_and_creators_section_view.dart';
 import 'package:movie_app/widgets/gradient_view.dart';
 import 'package:movie_app/widgets/rating_view.dart';
 import 'package:movie_app/widgets/title_text.dart';
+import 'package:scoped_model/scoped_model.dart';
 
-class MovieDetailsPage extends StatefulWidget {
-  final int movieId;
-
-  MovieDetailsPage({
-    @required this.movieId,
-  });
-
-  @override
-  _MovieDetailsPageState createState() => _MovieDetailsPageState();
-}
-
-class _MovieDetailsPageState extends State<MovieDetailsPage> {
-  MovieModel mMovieModel = MovieModelImpl();
-  MovieVO mMovie;
-  List<CreditVO> mActorList = [];
-  List<CreditVO> mCreatorList = [];
-
-  @override
-  void initState() {
-    /// network
-    mMovieModel.getMovieDetailById(widget.movieId.toString()).then((value) {
-      setState(() {
-        mMovie = value;
-      });
-    });
-
-    /// database
-    mMovieModel.getMovieDetailByIdFromDatabase(widget.movieId).then((value) {
-      setState(() {
-        mMovie = value;
-      });
-    });
-
-    mMovieModel
-        .getCreditByMovieId(widget.movieId.toString())
-        .then((creditList) {
-      setState(() {
-        mActorList = creditList.where((element) => element.isActor()).toList();
-        mCreatorList =
-            creditList.where((element) => element.isCreator()).toList();
-      });
-    });
-
-    super.initState();
-  }
-
+class MovieDetailsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: mMovie == null
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : Container(
-              color: HOME_SCREEN_BACKGROUND_COLOR,
-              child: CustomScrollView(
-                slivers: [
-                  MovieDetailsSliverAppBarView(
-                    () => Navigator.pop(context),
-                    mMovie,
+    return ScopedModelDescendant<MovieModelImpl>(
+      builder: (BuildContext context, Widget child, MovieModelImpl model) {
+        return Scaffold(
+          body: model.mMovie == null
+              ? Center(
+            child: CircularProgressIndicator(),
+          )
+              : Container(
+            color: HOME_SCREEN_BACKGROUND_COLOR,
+            child: CustomScrollView(
+              slivers: [
+                MovieDetailsSliverAppBarView(
+                      () => Navigator.pop(context),
+                  model.mMovie,
+                ),
+                SliverList(
+                  delegate: SliverChildListDelegate(
+                    [
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                          horizontal: MARGIN_MEDIUM_2,
+                        ),
+                        child: TrailerSectionView(
+                          model.mMovie,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      ActorsAndCreatorsSectionView(
+                        MOVIE_DETAILS_SCREEN_ACTORS,
+                        "",
+                        seeMoreButtonVisibility: false,
+                        actorList: model.mActorList,
+                      ),
+                      SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                          horizontal: MARGIN_MEDIUM_2,
+                        ),
+                        child: AboutFilmSectionView(
+                          movie: model.mMovie,
+                        ),
+                      ),
+                      SizedBox(
+                        height: MARGIN_LARGE,
+                      ),
+                      model.mCreatorList == null || model.mCreatorList.isEmpty
+                          ? Container()
+                          : ActorsAndCreatorsSectionView(
+                        MOVIE_DETAILS_SCREEN_CREATORS,
+                        MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
+                        actorList: model.mCreatorList,
+                      ),
+                    ],
                   ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: MARGIN_MEDIUM_2,
-                          ),
-                          child: TrailerSectionView(
-                            mMovie,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MARGIN_LARGE,
-                        ),
-                        ActorsAndCreatorsSectionView(
-                          MOVIE_DETAILS_SCREEN_ACTORS,
-                          "",
-                          seeMoreButtonVisibility: false,
-                          actorList: mActorList,
-                        ),
-                        SizedBox(
-                          height: MARGIN_LARGE,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: MARGIN_MEDIUM_2,
-                          ),
-                          child: AboutFilmSectionView(
-                            movie: mMovie,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MARGIN_LARGE,
-                        ),
-                        mCreatorList == null || mCreatorList.isEmpty
-                            ? Container()
-                            : ActorsAndCreatorsSectionView(
-                                MOVIE_DETAILS_SCREEN_CREATORS,
-                                MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
-                                actorList: mCreatorList,
-                              ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
+          ),
+        );
+      },
     );
   }
+
 }
 
 class AboutFilmSectionView extends StatelessWidget {
