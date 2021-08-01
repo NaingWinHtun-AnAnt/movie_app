@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:movie_app/blocs/movie_detail_bloc.dart';
+import 'package:movie_app/data/vos/credit_vo.dart';
 import 'package:movie_app/data/vos/movie_vo.dart';
 import 'package:movie_app/network/api_constants.dart';
 import 'package:movie_app/resources/colors.dart';
@@ -28,67 +29,76 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
     return ChangeNotifierProvider(
       create: (BuildContext context) => MovieDetailBloc(widget.movieId),
       child: Scaffold(
-        body: Consumer<MovieDetailBloc>(
-          builder: (BuildContext context, bloc, Widget child) {
-            return bloc.mMovie == null
+        body: Selector<MovieDetailBloc, MovieVO>(
+          selector: (context, bloc) => bloc.mMovie,
+          builder: (BuildContext context, movie, Widget child) {
+            return movie == null
                 ? Center(
-              child: CircularProgressIndicator(),
-            )
+                    child: CircularProgressIndicator(),
+                  )
                 : Container(
-              color: HOME_SCREEN_BACKGROUND_COLOR,
-              child: CustomScrollView(
-                slivers: [
-                  MovieDetailsSliverAppBarView(
-                        () => Navigator.pop(context),
-                    bloc.mMovie,
-                  ),
-                  SliverList(
-                    delegate: SliverChildListDelegate(
-                      [
-                        Container(
-                          margin: EdgeInsets.symmetric(
-                            horizontal: MARGIN_MEDIUM_2,
+                    color: HOME_SCREEN_BACKGROUND_COLOR,
+                    child: CustomScrollView(
+                      slivers: [
+                        MovieDetailsSliverAppBarView(
+                          () => Navigator.pop(context),
+                          movie,
+                        ),
+                        SliverList(
+                          delegate: SliverChildListDelegate(
+                            [
+                              Container(
+                                margin: EdgeInsets.symmetric(
+                                  horizontal: MARGIN_MEDIUM_2,
+                                ),
+                                child: TrailerSectionView(
+                                  movie,
+                                ),
+                              ),
+                              SizedBox(
+                                height: MARGIN_LARGE,
+                              ),
+                              Selector<MovieDetailBloc, List<CreditVO>>(
+                                builder: (context, actorList, child) =>
+                                    ActorsAndCreatorsSectionView(
+                                  MOVIE_DETAILS_SCREEN_ACTORS,
+                                  "",
+                                  seeMoreButtonVisibility: false,
+                                  actorList: actorList,
+                                ),
+                                selector: (context, bloc) => bloc.mActorList,
+                              ),
+                              SizedBox(
+                                height: MARGIN_LARGE,
+                              ),
+                              Container(
+                                padding: EdgeInsets.symmetric(
+                                  horizontal: MARGIN_MEDIUM_2,
+                                ),
+                                child: AboutFilmSectionView(
+                                  movie: movie,
+                                ),
+                              ),
+                              SizedBox(
+                                height: MARGIN_LARGE,
+                              ),
+                              Selector<MovieDetailBloc, List<CreditVO>>(
+                                builder: (context, creatorList, child) =>
+                                    creatorList == null || creatorList.isEmpty
+                                        ? Container()
+                                        : ActorsAndCreatorsSectionView(
+                                            MOVIE_DETAILS_SCREEN_CREATORS,
+                                            MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
+                                            actorList: creatorList,
+                                          ),
+                                selector: (context, bloc) => bloc.mCreatorList,
+                              ),
+                            ],
                           ),
-                          child: TrailerSectionView(
-                            bloc.mMovie,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MARGIN_LARGE,
-                        ),
-                        ActorsAndCreatorsSectionView(
-                          MOVIE_DETAILS_SCREEN_ACTORS,
-                          "",
-                          seeMoreButtonVisibility: false,
-                          actorList: bloc.mActorList,
-                        ),
-                        SizedBox(
-                          height: MARGIN_LARGE,
-                        ),
-                        Container(
-                          padding: EdgeInsets.symmetric(
-                            horizontal: MARGIN_MEDIUM_2,
-                          ),
-                          child: AboutFilmSectionView(
-                            movie: bloc.mMovie,
-                          ),
-                        ),
-                        SizedBox(
-                          height: MARGIN_LARGE,
-                        ),
-                        bloc.mCreatorList == null || bloc.mCreatorList.isEmpty
-                            ? Container()
-                            : ActorsAndCreatorsSectionView(
-                          MOVIE_DETAILS_SCREEN_CREATORS,
-                          MOVIE_DETAILS_SCREEN_CREATORS_SEE_MORE,
-                          actorList: bloc.mCreatorList,
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            );
+                  );
           },
         ),
       ),
