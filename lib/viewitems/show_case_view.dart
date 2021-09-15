@@ -6,7 +6,7 @@ import 'package:movie_app/widgets/play_button_view.dart';
 import 'package:movie_app/widgets/title_text.dart';
 
 class ShowCaseView extends StatelessWidget {
-  final MovieVO topRatedMovie;
+  final MovieVO? topRatedMovie;
 
   ShowCaseView({
     this.topRatedMovie,
@@ -21,15 +21,15 @@ class ShowCaseView extends StatelessWidget {
         child: Stack(
           children: [
             ShowCaseImageView(
-              imageUrl: topRatedMovie.posterPath,
+              imageUrl: topRatedMovie?.posterPath,
             ),
             Align(
               alignment: Alignment.center,
               child: PlayButtonView(),
             ),
             ShowCaseMovieTitleAndDateSectionView(
-              topRatedMovieTitle: topRatedMovie.title,
-              date: topRatedMovie.releaseDate,
+              topRatedMovieTitle: topRatedMovie?.title,
+              date: topRatedMovie?.releaseDate,
             ),
           ],
         ),
@@ -39,8 +39,8 @@ class ShowCaseView extends StatelessWidget {
 }
 
 class ShowCaseMovieTitleAndDateSectionView extends StatelessWidget {
-  final String topRatedMovieTitle;
-  final String date;
+  final String? topRatedMovieTitle;
+  final String? date;
 
   ShowCaseMovieTitleAndDateSectionView({
     this.topRatedMovieTitle,
@@ -58,7 +58,7 @@ class ShowCaseMovieTitleAndDateSectionView extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              topRatedMovieTitle,
+              topRatedMovieTitle ?? "-",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: TEXT_REGULAR_3X,
@@ -69,7 +69,7 @@ class ShowCaseMovieTitleAndDateSectionView extends StatelessWidget {
               height: MARGIN_MEDIUM,
             ),
             TitleText(
-              date,
+              date ?? "-",
             ),
           ],
         ),
@@ -79,7 +79,7 @@ class ShowCaseMovieTitleAndDateSectionView extends StatelessWidget {
 }
 
 class ShowCaseImageView extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
 
   ShowCaseImageView({
     this.imageUrl,

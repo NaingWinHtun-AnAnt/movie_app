@@ -17,32 +17,32 @@ class MovieVOAdapter extends TypeAdapter<MovieVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return MovieVO(
-      adult: fields[0] as bool,
-      backDropPath: fields[1] as String,
-      belongsToCollection: fields[2] as CollectionVO,
-      budget: fields[3] as double,
-      genres: (fields[4] as List)?.cast<GenreVO>(),
-      homepage: fields[5] as String,
-      genreIds: (fields[6] as List)?.cast<int>(),
+      adult: fields[0] as bool?,
+      backDropPath: fields[1] as String?,
+      belongsToCollection: fields[2] as CollectionVO?,
+      budget: fields[3] as double?,
+      genres: (fields[4] as List?)?.cast<GenreVO>(),
+      homepage: fields[5] as String?,
+      genreIds: (fields[6] as List?)?.cast<int>(),
       id: fields[7] as int,
-      imdbId: fields[8] as String,
-      originalLanguage: fields[9] as String,
-      originalTitle: fields[10] as String,
-      overView: fields[11] as String,
-      popularity: fields[12] as double,
-      posterPath: fields[13] as String,
-      productionCompanies: (fields[14] as List)?.cast<ProductionCompanyVO>(),
-      productionCountries: (fields[15] as List)?.cast<ProductionCountryVO>(),
-      revenue: fields[16] as double,
-      runtime: fields[17] as int,
-      releaseDate: fields[18] as String,
-      spokenLanguages: (fields[19] as List)?.cast<SpokenLanguageVO>(),
-      status: fields[20] as String,
-      tagLine: fields[21] as String,
-      title: fields[22] as String,
-      video: fields[23] as bool,
-      voteAverage: fields[24] as double,
-      voteCount: fields[25] as int,
+      imdbId: fields[8] as String?,
+      originalLanguage: fields[9] as String?,
+      originalTitle: fields[10] as String?,
+      overView: fields[11] as String?,
+      popularity: fields[12] as double?,
+      posterPath: fields[13] as String?,
+      productionCompanies: (fields[14] as List?)?.cast<ProductionCompanyVO>(),
+      productionCountries: (fields[15] as List?)?.cast<ProductionCountryVO>(),
+      revenue: fields[16] as double?,
+      runtime: fields[17] as int?,
+      releaseDate: fields[18] as String?,
+      spokenLanguages: (fields[19] as List?)?.cast<SpokenLanguageVO>(),
+      status: fields[20] as String?,
+      tagLine: fields[21] as String?,
+      title: fields[22] as String?,
+      video: fields[23] as bool?,
+      voteAverage: fields[24] as double?,
+      voteCount: fields[25] as int?,
       isNowPlaying: fields[26] as bool,
       isPopular: fields[28] as bool,
       isTopRated: fields[27] as bool,
@@ -130,53 +130,44 @@ class MovieVOAdapter extends TypeAdapter<MovieVO> {
 
 MovieVO _$MovieVOFromJson(Map<String, dynamic> json) {
   return MovieVO(
-    adult: json['adult'] as bool,
-    backDropPath: json['backdrop_path'] as String,
+    adult: json['adult'] as bool?,
+    backDropPath: json['backdrop_path'] as String?,
     belongsToCollection: json['belongs_to_collection'] == null
         ? null
         : CollectionVO.fromJson(
             json['belongs_to_collection'] as Map<String, dynamic>),
-    budget: (json['budget'] as num)?.toDouble(),
-    genres: (json['genres'] as List)
-        ?.map((e) =>
-            e == null ? null : GenreVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    homepage: json['homepage'] as String,
-    genreIds: (json['genre_ids'] as List)?.map((e) => e as int)?.toList(),
+    budget: (json['budget'] as num?)?.toDouble(),
+    genres: (json['genres'] as List<dynamic>?)
+        ?.map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    homepage: json['homepage'] as String?,
+    genreIds:
+        (json['genre_ids'] as List<dynamic>?)?.map((e) => e as int).toList(),
     id: json['id'] as int,
-    imdbId: json['imdb_id'] as String,
-    originalLanguage: json['original_language'] as String,
-    originalTitle: json['original_title'] as String,
-    overView: json['overview'] as String,
-    popularity: (json['popularity'] as num)?.toDouble(),
-    posterPath: json['poster_path'] as String,
-    productionCompanies: (json['production_companies'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ProductionCompanyVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    productionCountries: (json['production_countries'] as List)
-        ?.map((e) => e == null
-            ? null
-            : ProductionCountryVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    revenue: (json['revenue'] as num)?.toDouble(),
-    runtime: json['runtime'] as int,
-    releaseDate: json['release_date'] as String,
-    spokenLanguages: (json['spoken_languages'] as List)
-        ?.map((e) => e == null
-            ? null
-            : SpokenLanguageVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    status: json['status'] as String,
-    tagLine: json['tagline'] as String,
-    title: json['title'] as String,
-    video: json['video'] as bool,
-    voteAverage: (json['vote_average'] as num)?.toDouble(),
-    voteCount: json['vote_count'] as int,
-    isNowPlaying: json['isNowPlaying'] as bool,
-    isPopular: json['isPopular'] as bool,
-    isTopRated: json['isTopRated'] as bool,
+    imdbId: json['imdb_id'] as String?,
+    originalLanguage: json['original_language'] as String?,
+    originalTitle: json['original_title'] as String?,
+    overView: json['overview'] as String?,
+    popularity: (json['popularity'] as num?)?.toDouble(),
+    posterPath: json['poster_path'] as String?,
+    productionCompanies: (json['production_companies'] as List<dynamic>?)
+        ?.map((e) => ProductionCompanyVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    productionCountries: (json['production_countries'] as List<dynamic>?)
+        ?.map((e) => ProductionCountryVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    revenue: (json['revenue'] as num?)?.toDouble(),
+    runtime: json['runtime'] as int?,
+    releaseDate: json['release_date'] as String?,
+    spokenLanguages: (json['spoken_languages'] as List<dynamic>?)
+        ?.map((e) => SpokenLanguageVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    status: json['status'] as String?,
+    tagLine: json['tagline'] as String?,
+    title: json['title'] as String?,
+    video: json['video'] as bool?,
+    voteAverage: (json['vote_average'] as num?)?.toDouble(),
+    voteCount: json['vote_count'] as int?,
   );
 }
 
@@ -207,7 +198,4 @@ Map<String, dynamic> _$MovieVOToJson(MovieVO instance) => <String, dynamic>{
       'video': instance.video,
       'vote_average': instance.voteAverage,
       'vote_count': instance.voteCount,
-      'isNowPlaying': instance.isNowPlaying,
-      'isTopRated': instance.isTopRated,
-      'isPopular': instance.isPopular,
     };

@@ -6,7 +6,7 @@ part 'genre_response.g.dart';
 @JsonSerializable()
 class GenreResponse {
   @JsonKey(name: "genres")
-  List<GenreVO> genres;
+  List<GenreVO>? genres;
 
   GenreResponse({
     this.genres,

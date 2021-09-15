@@ -11,11 +11,10 @@ MovieListResponse _$MovieListResponseFromJson(Map<String, dynamic> json) {
     date: json['dates'] == null
         ? null
         : DateVO.fromJson(json['dates'] as Map<String, dynamic>),
-    page: json['page'] as int,
-    result: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : MovieVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    page: json['page'] as int?,
+    result: (json['results'] as List<dynamic>?)
+        ?.map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

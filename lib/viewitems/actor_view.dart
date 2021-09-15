@@ -5,7 +5,7 @@ import 'package:movie_app/resources/colors.dart';
 import 'package:movie_app/resources/dimens.dart';
 
 class ActorView extends StatelessWidget {
-  final BaseActorVO actor;
+  final BaseActorVO? actor;
 
   ActorView({
     this.actor,
@@ -22,7 +22,7 @@ class ActorView extends StatelessWidget {
         children: [
           Positioned.fill(
             child: ActorImageView(
-              imageURL: actor.profilePath,
+              imageURL: actor?.profilePath,
             ),
           ),
           Padding(
@@ -37,7 +37,7 @@ class ActorView extends StatelessWidget {
           Align(
             alignment: Alignment.bottomCenter,
             child: ActorNameAndLikeView(
-              name: actor.name,
+              name: actor?.name,
               like: 56706,
             ),
           ),
@@ -48,7 +48,7 @@ class ActorView extends StatelessWidget {
 }
 
 class ActorImageView extends StatelessWidget {
-  final String imageURL;
+  final String? imageURL;
 
   ActorImageView({
     this.imageURL,
@@ -64,10 +64,6 @@ class ActorImageView extends StatelessWidget {
 }
 
 class FavoriteButtonView extends StatelessWidget {
-  const FavoriteButtonView({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Icon(
@@ -78,8 +74,8 @@ class FavoriteButtonView extends StatelessWidget {
 }
 
 class ActorNameAndLikeView extends StatelessWidget {
-  final String name;
-  final double like;
+  final String? name;
+  final double? like;
 
   const ActorNameAndLikeView({
     this.name,
@@ -98,7 +94,7 @@ class ActorNameAndLikeView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            name,
+            name ?? "",
             style: TextStyle(
               fontSize: TEXT_REGULAR,
               color: Colors.white,

@@ -1,6 +1,5 @@
 import 'package:dots_indicator/dots_indicator.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/foundation.dart';
 import 'package:movie_app/blocs/home_bloc.dart';
 import 'package:movie_app/data/vos/actor_vo.dart';
 import 'package:movie_app/data/vos/genre_vo.dart';
@@ -50,16 +49,16 @@ class HomePage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Selector<HomeBloc, List<MovieVO>>(
+                Selector<HomeBloc, List<MovieVO>?>(
                   selector: (context, bloc) => bloc.mPopularMovieList,
                   builder: (context, popularMovieList, child) {
                     return BannerSectionView(
-                      popularMovieList,
+                      popularMovieList?.take(8).toList(),
                     );
                   },
                 ),
                 SizedBox(height: MARGIN_LARGE),
-                Selector<HomeBloc, List<MovieVO>>(
+                Selector<HomeBloc, List<MovieVO>?>(
                   selector: (context, bloc) => bloc.mNowPlayingMovieList,
                   builder: (context, nowPlayingMovieList, child) {
                     return BestPopularMoviesAndSerialsSectionView(
@@ -67,16 +66,16 @@ class HomePage extends StatelessWidget {
                               context,
                               movieId,
                             ),
-                        nowPlayingMovieList);
+                        nowPlayingMovieList ?? []);
                   },
                 ),
                 SizedBox(height: MARGIN_LARGE),
                 CheckMovieShowTimeSectionView(),
                 SizedBox(height: MARGIN_LARGE),
-                Selector<HomeBloc, List<GenreVO>>(
+                Selector<HomeBloc, List<GenreVO>?>(
                   selector: (context, bloc) => bloc.mGenreList,
                   builder: (context, genreList, child) =>
-                      Selector<HomeBloc, List<MovieVO>>(
+                      Selector<HomeBloc, List<MovieVO>?>(
                     selector: (context, bloc) => bloc.mMovieListByGenre,
                     builder: (context, movieByGenreList, child) =>
                         GenreSectionView(
@@ -84,39 +83,39 @@ class HomePage extends StatelessWidget {
                         context,
                         movieId,
                       ),
-                      genreList: genreList,
+                      genreList: genreList ?? [],
                       onTapGenre: (genreId) {
                         HomeBloc bloc =
                             Provider.of<HomeBloc>(context, listen: false);
                         bloc.getMovieListByGenre(genreId);
                       },
-                      movieListByGenre: movieByGenreList,
+                      movieListByGenre: movieByGenreList ?? [],
                     ),
                   ),
                 ),
                 SizedBox(
                   height: MARGIN_MEDIUM_2,
                 ),
-                Selector<HomeBloc, List<MovieVO>>(
+                Selector<HomeBloc, List<MovieVO>?>(
                   selector: (context, bloc) => bloc.mTopRatedMovieList,
                   builder: (context, topRatedMovieList, child) {
                     return ShowCasesSection(
-                      topRatedMovies: topRatedMovieList,
+                      topRatedMovies: topRatedMovieList ?? [],
                     );
                   },
                 ),
                 SizedBox(
                   height: MARGIN_LARGE,
                 ),
-                Selector<HomeBloc, List<ActorVO>>(
-                  selector: (context, bloc) => bloc.mActorList,
-                  builder: (BuildContext context, actorList, Widget child) {
-                    return ActorsAndCreatorsSectionView(
-                      BEST_ACTORS_TITLE,
-                      BEST_ACTORS_SEE_MORE,
-                      actorList: actorList,
-                    );
-                  },
+                Selector<HomeBloc, List<ActorVO>?>(
+                  selector: (BuildContext context, HomeBloc bloc) =>
+                      bloc.mActorList,
+                  builder: (BuildContext context, actorList, Widget? child) =>
+                      ActorsAndCreatorsSectionView(
+                    BEST_ACTORS_TITLE,
+                    BEST_ACTORS_SEE_MORE,
+                    actorList: actorList,
+                  ),
                 ),
                 SizedBox(
                   height: MARGIN_LARGE,
@@ -149,9 +148,9 @@ class GenreSectionView extends StatelessWidget {
 
   const GenreSectionView(
     this.onTapMovie, {
-    @required this.genreList,
-    @required this.movieListByGenre,
-    @required this.onTapGenre,
+    required this.genreList,
+    required this.movieListByGenre,
+    required this.onTapGenre,
   });
 
   @override
@@ -186,7 +185,7 @@ class GenreSectionView extends StatelessWidget {
             bottom: MARGIN_MEDIUM,
           ),
           child: HorizontalMovieListView(
-                (movieId) {
+            (movieId) {
               this.onTapMovie(movieId);
             },
             movieList: movieListByGenre,
@@ -240,7 +239,7 @@ class CheckMovieShowTimeSectionView extends StatelessWidget {
 }
 
 class ShowCasesSection extends StatelessWidget {
-  final List<MovieVO> topRatedMovies;
+  final List<MovieVO>? topRatedMovies;
 
   ShowCasesSection({
     this.topRatedMovies,
@@ -268,12 +267,13 @@ class ShowCasesSection extends StatelessWidget {
             padding: EdgeInsets.only(left: MARGIN_MEDIUM_2),
             scrollDirection: Axis.horizontal,
             children: topRatedMovies
-                .map(
-                  (topRatedMovieList) => ShowCaseView(
-                    topRatedMovie: topRatedMovieList,
-                  ),
-                )
-                .toList(),
+                    ?.map(
+                      (topRatedMovieList) => ShowCaseView(
+                        topRatedMovie: topRatedMovieList,
+                      ),
+                    )
+                    .toList() ??
+                [],
           ),
         ),
       ],
@@ -307,7 +307,7 @@ class BestPopularMoviesAndSerialsSectionView extends StatelessWidget {
           height: MARGIN_MEDIUM_2,
         ),
         HorizontalMovieListView(
-              (movieId) => onTapMovie(movieId),
+          (movieId) => onTapMovie(movieId),
           movieList: mNowPlayingMovieList,
         ),
       ],
@@ -317,7 +317,7 @@ class BestPopularMoviesAndSerialsSectionView extends StatelessWidget {
 
 class HorizontalMovieListView extends StatelessWidget {
   final Function(int) onTapMovie;
-  final List<MovieVO> movieList;
+  final List<MovieVO>? movieList;
 
   HorizontalMovieListView(
     this.onTapMovie, {
@@ -332,11 +332,11 @@ class HorizontalMovieListView extends StatelessWidget {
           ? ListView.builder(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: MARGIN_MEDIUM_2),
-              itemCount: movieList.length,
+              itemCount: movieList?.length ?? 0,
               itemBuilder: (BuildContext context, int index) {
                 return MovieView(
-                  () => this.onTapMovie(movieList[index].id),
-                  movie: movieList[index],
+                  () => this.onTapMovie(movieList?[index].id ?? 0),
+                  movie: movieList?[index],
                 );
               },
             )
@@ -348,7 +348,7 @@ class HorizontalMovieListView extends StatelessWidget {
 }
 
 class BannerSectionView extends StatefulWidget {
-  final List<MovieVO> popularMovieList;
+  final List<MovieVO>? popularMovieList;
 
   const BannerSectionView(
     this.popularMovieList,
@@ -375,19 +375,20 @@ class _BannerSectionViewState extends State<BannerSectionView> {
                     });
                   },
                   children: widget.popularMovieList
-                      .map(
-                        (popularMovie) => BannerView(
-                          popularMovie,
-                        ),
-                      )
-                      .toList(),
+                          ?.map(
+                            (popularMovie) => BannerView(
+                              popularMovie,
+                            ),
+                          )
+                          .toList() ??
+                      [],
                 ),
               ),
               SizedBox(
                 height: MARGIN_MEDIUM_2,
               ),
               DotsIndicator(
-                dotsCount: widget.popularMovieList.length,
+                dotsCount: widget.popularMovieList?.length ?? 0,
                 position: _position,
                 decorator: DotsDecorator(
                   spacing: EdgeInsets.all(4),

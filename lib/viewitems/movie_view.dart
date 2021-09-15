@@ -6,7 +6,7 @@ import 'package:movie_app/widgets/rating_view.dart';
 
 class MovieView extends StatelessWidget {
   final Function onTapMovie;
-  final MovieVO movie;
+  final MovieVO? movie;
 
   MovieView(
     this.onTapMovie, {
@@ -26,14 +26,14 @@ class MovieView extends StatelessWidget {
               onTapMovie();
             },
             child: Image.network(
-              "$IMAGE_BASE_URL${movie.posterPath}",
+              "$IMAGE_BASE_URL${movie?.posterPath}",
               height: MOVIE_LIST_ITEM_IMAGE_HEIGHT,
               fit: BoxFit.cover,
             ),
           ),
           SizedBox(height: MARGIN_MEDIUM),
           Text(
-            movie.title,
+            movie?.title ?? "",
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: TEXT_REGULAR_2X,

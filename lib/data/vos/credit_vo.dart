@@ -10,11 +10,11 @@ part 'credit_vo.g.dart';
 class CreditVO extends BaseActorVO {
   @JsonKey(name: "adult")
   @HiveField(0)
-  bool adult;
+  bool? adult;
 
   @JsonKey(name: "gender")
   @HiveField(1)
-  int gender;
+  int? gender;
 
   @JsonKey(name: "id")
   @HiveField(2)
@@ -22,41 +22,41 @@ class CreditVO extends BaseActorVO {
 
   @JsonKey(name: "known_for_department")
   @HiveField(3)
-  String knownForDepartment;
+  String? knownForDepartment;
 
   @JsonKey(name: "original_name")
   @HiveField(4)
-  String originalName;
+  String? originalName;
 
   @JsonKey(name: "popularity")
   @HiveField(5)
-  double popularity;
+  double? popularity;
 
   @JsonKey(name: "cast_id")
   @HiveField(6)
-  int castId;
+  int? castId;
 
   @JsonKey(name: "character")
   @HiveField(7)
-  String character;
+  String? character;
 
   @JsonKey(name: "credit_id")
   @HiveField(8)
-  String creditId;
+  String? creditId;
 
   @JsonKey(name: "order")
   @HiveField(9)
-  int order;
+  int? order;
 
   CreditVO({
     this.adult,
     this.gender,
-    this.id,
+    required this.id,
     this.knownForDepartment,
     this.originalName,
     this.popularity,
-    String name,
-    String profilePath,
+    String? name,
+    String? profilePath,
     this.castId,
     this.character,
     this.creditId,

@@ -8,11 +8,10 @@ part of 'best_actor_response.dart';
 
 BestActorResponse _$BestActorResponseFromJson(Map<String, dynamic> json) {
   return BestActorResponse(
-    page: json['page'] as int,
-    actorList: (json['results'] as List)
-        ?.map((e) =>
-            e == null ? null : ActorVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    page: json['page'] as int?,
+    actorList: (json['results'] as List<dynamic>?)
+        ?.map((e) => ActorVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

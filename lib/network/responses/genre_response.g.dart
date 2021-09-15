@@ -8,10 +8,9 @@ part of 'genre_response.dart';
 
 GenreResponse _$GenreResponseFromJson(Map<String, dynamic> json) {
   return GenreResponse(
-    genres: (json['genres'] as List)
-        ?.map((e) =>
-            e == null ? null : GenreVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
+    genres: (json['genres'] as List<dynamic>?)
+        ?.map((e) => GenreVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
   );
 }
 

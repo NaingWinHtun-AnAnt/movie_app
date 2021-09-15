@@ -18,9 +18,9 @@ class ProductionCompanyVOAdapter extends TypeAdapter<ProductionCompanyVO> {
     };
     return ProductionCompanyVO(
       id: fields[0] as int,
-      logoPath: fields[1] as String,
-      name: fields[2] as String,
-      originCountry: fields[3] as String,
+      logoPath: fields[1] as String?,
+      name: fields[2] as String?,
+      originCountry: fields[3] as String?,
     );
   }
 
@@ -56,9 +56,9 @@ class ProductionCompanyVOAdapter extends TypeAdapter<ProductionCompanyVO> {
 ProductionCompanyVO _$ProductionCompanyVOFromJson(Map<String, dynamic> json) {
   return ProductionCompanyVO(
     id: json['id'] as int,
-    logoPath: json['logo_path'] as String,
-    name: json['name'] as String,
-    originCountry: json['origin_country'] as String,
+    logoPath: json['logo_path'] as String?,
+    name: json['name'] as String?,
+    originCountry: json['origin_country'] as String?,
   );
 }
 

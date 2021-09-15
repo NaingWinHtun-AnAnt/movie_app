@@ -17,13 +17,13 @@ class ActorVOAdapter extends TypeAdapter<ActorVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return ActorVO(
-      adult: fields[0] as bool,
-      gender: fields[1] as int,
+      adult: fields[0] as bool?,
+      gender: fields[1] as int?,
       id: fields[2] as int,
-      knownFor: (fields[3] as List)?.cast<MovieVO>(),
-      popularity: fields[4] as double,
-      name: fields[11] as String,
-      profilePath: fields[12] as String,
+      knownFor: (fields[3] as List?)?.cast<MovieVO>(),
+      popularity: fields[4] as double?,
+      name: fields[11] as String?,
+      profilePath: fields[12] as String?,
     );
   }
 
@@ -64,16 +64,15 @@ class ActorVOAdapter extends TypeAdapter<ActorVO> {
 
 ActorVO _$ActorVOFromJson(Map<String, dynamic> json) {
   return ActorVO(
-    adult: json['adult'] as bool,
-    gender: json['gender'] as int,
+    adult: json['adult'] as bool?,
+    gender: json['gender'] as int?,
     id: json['id'] as int,
-    knownFor: (json['known_for'] as List)
-        ?.map((e) =>
-            e == null ? null : MovieVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    popularity: (json['popularity'] as num)?.toDouble(),
-    name: json['name'] as String,
-    profilePath: json['profile_path'] as String,
+    knownFor: (json['known_for'] as List<dynamic>?)
+        ?.map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    popularity: (json['popularity'] as num?)?.toDouble(),
+    name: json['name'] as String?,
+    profilePath: json['profile_path'] as String?,
   );
 }
 

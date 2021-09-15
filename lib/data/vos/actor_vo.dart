@@ -11,11 +11,11 @@ part 'actor_vo.g.dart';
 class ActorVO extends BaseActorVO {
   @JsonKey(name: "adult")
   @HiveField(0)
-  bool adult;
+  bool? adult;
 
   @JsonKey(name: "gender")
   @HiveField(1)
-  int gender;
+  int? gender;
 
   @JsonKey(name: "id")
   @HiveField(2)
@@ -23,20 +23,20 @@ class ActorVO extends BaseActorVO {
 
   @JsonKey(name: "known_for")
   @HiveField(3)
-  List<MovieVO> knownFor;
+  List<MovieVO>? knownFor;
 
   @JsonKey(name: "popularity")
   @HiveField(4)
-  double popularity;
+  double? popularity;
 
   ActorVO({
     this.adult,
     this.gender,
-    this.id,
+    required this.id,
     this.knownFor,
     this.popularity,
-    String name,
-    String profilePath,
+    String? name,
+    String? profilePath,
   }) : super(
           name: name,
           profilePath: profilePath,

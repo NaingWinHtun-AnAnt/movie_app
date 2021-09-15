@@ -9,11 +9,11 @@ part 'date_vo.g.dart';
 class DateVO {
   @JsonKey(name: "maximum")
   @HiveField(0)
-  String maximum;
+  String? maximum;
 
   @JsonKey(name: "minimum")
   @HiveField(1)
-  String minimum;
+  String? minimum;
 
   DateVO({
     this.maximum,

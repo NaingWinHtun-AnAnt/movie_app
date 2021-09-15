@@ -17,8 +17,8 @@ class BaseActorVOAdapter extends TypeAdapter<BaseActorVO> {
       for (int i = 0; i < numOfFields; i++) reader.readByte(): reader.read(),
     };
     return BaseActorVO(
-      name: fields[11] as String,
-      profilePath: fields[12] as String,
+      name: fields[11] as String?,
+      profilePath: fields[12] as String?,
     );
   }
 
@@ -49,8 +49,8 @@ class BaseActorVOAdapter extends TypeAdapter<BaseActorVO> {
 
 BaseActorVO _$BaseActorVOFromJson(Map<String, dynamic> json) {
   return BaseActorVO(
-    name: json['name'] as String,
-    profilePath: json['profile_path'] as String,
+    name: json['name'] as String?,
+    profilePath: json['profile_path'] as String?,
   );
 }
 

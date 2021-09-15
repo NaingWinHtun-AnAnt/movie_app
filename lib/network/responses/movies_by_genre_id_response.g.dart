@@ -9,12 +9,11 @@ part of 'movies_by_genre_id_response.dart';
 MoviesByGenreIdResponse _$MoviesByGenreIdResponseFromJson(
     Map<String, dynamic> json) {
   return MoviesByGenreIdResponse(
-    id: json['id'] as String,
-    movies: (json['items'] as List)
-        ?.map((e) =>
-            e == null ? null : MovieVO.fromJson(e as Map<String, dynamic>))
-        ?.toList(),
-    itemCount: json['item_count'] as int,
+    id: json['id'] as String?,
+    movies: (json['items'] as List<dynamic>?)
+        ?.map((e) => MovieVO.fromJson(e as Map<String, dynamic>))
+        .toList(),
+    itemCount: json['item_count'] as int?,
   );
 }
 

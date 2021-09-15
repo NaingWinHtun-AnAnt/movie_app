@@ -9,7 +9,7 @@ class ActorsAndCreatorsSectionView extends StatelessWidget {
   final String titleText;
   final String seeMoreText;
   final bool seeMoreButtonVisibility;
-  final List<BaseActorVO> actorList;
+  final List<BaseActorVO>? actorList;
 
   const ActorsAndCreatorsSectionView(
     this.titleText,
@@ -47,12 +47,13 @@ class ActorsAndCreatorsSectionView extends StatelessWidget {
               padding: EdgeInsets.only(left: MARGIN_MEDIUM_2),
               scrollDirection: Axis.horizontal,
               children: actorList
-                  .map(
-                    (actor) => ActorView(
-                      actor: actor,
-                    ),
-                  )
-                  .toList(),
+                      ?.map(
+                        (actor) => ActorView(
+                          actor: actor,
+                        ),
+                      )
+                      .toList() ??
+                  [],
             ),
           ),
         ],

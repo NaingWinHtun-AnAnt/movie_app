@@ -11,7 +11,7 @@ class DioMovieDataAgentImpl extends MovieDataAgent {
 
   ///TODO:Return MOVIE LIST IF you wanna use dio data agent and remove ignore : Missing return
   // ignore: missing_return
-  Future<List<MovieVO>> getNowPlayingMovies(int page) {
+  Future<List<MovieVO>?>? getNowPlayingMovies(int page) {
     Map<String, String> queryParameters = {
       PARAM_API_KEY: API_KEY,
       PARAM_LANGUAGE: LANGUAGE_EN_US,

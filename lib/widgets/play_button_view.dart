@@ -3,10 +3,6 @@ import 'package:movie_app/resources/colors.dart';
 import 'package:movie_app/resources/dimens.dart';
 
 class PlayButtonView extends StatelessWidget {
-  const PlayButtonView({
-    Key key,
-  }) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     return Icon(

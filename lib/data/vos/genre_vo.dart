@@ -16,8 +16,8 @@ class GenreVO {
   String name;
 
   GenreVO({
-    this.id,
-    this.name,
+    required this.id,
+    required this.name,
   });
 
   factory GenreVO.fromJson(Map<String, dynamic> json) =>

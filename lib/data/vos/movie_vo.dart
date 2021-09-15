@@ -9,36 +9,36 @@ import 'package:movie_app/persistence/hive_constants.dart';
 
 part 'movie_vo.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(ignoreUnannotated: true)
 @HiveType(typeId: HIVE_TYPE_ID_MOVIE_VO, adapterName: "MovieVOAdapter")
 class MovieVO {
   @JsonKey(name: "adult")
   @HiveField(0)
-  bool adult;
+  bool? adult;
 
   @JsonKey(name: "backdrop_path")
   @HiveField(1)
-  String backDropPath;
+  String? backDropPath;
 
   @JsonKey(name: "belongs_to_collection")
   @HiveField(2)
-  CollectionVO belongsToCollection;
+  CollectionVO? belongsToCollection;
 
   @JsonKey(name: "budget")
   @HiveField(3)
-  double budget;
+  double? budget;
 
   @JsonKey(name: "genres")
   @HiveField(4)
-  List<GenreVO> genres;
+  List<GenreVO>? genres;
 
   @JsonKey(name: "homepage")
   @HiveField(5)
-  String homepage;
+  String? homepage;
 
   @JsonKey(name: "genre_ids")
   @HiveField(6)
-  List<int> genreIds;
+  List<int>? genreIds;
 
   @JsonKey(name: "id")
   @HiveField(7)
@@ -46,75 +46,75 @@ class MovieVO {
 
   @JsonKey(name: "imdb_id")
   @HiveField(8)
-  String imdbId;
+  String? imdbId;
 
   @JsonKey(name: "original_language")
   @HiveField(9)
-  String originalLanguage;
+  String? originalLanguage;
 
   @JsonKey(name: "original_title")
   @HiveField(10)
-  String originalTitle;
+  String? originalTitle;
 
   @JsonKey(name: "overview")
   @HiveField(11)
-  String overView;
+  String? overView;
 
   @JsonKey(name: "popularity")
   @HiveField(12)
-  double popularity;
+  double? popularity;
 
   @JsonKey(name: "poster_path")
   @HiveField(13)
-  String posterPath;
+  String? posterPath;
 
   @JsonKey(name: "production_companies")
   @HiveField(14)
-  List<ProductionCompanyVO> productionCompanies;
+  List<ProductionCompanyVO>? productionCompanies;
 
   @JsonKey(name: "production_countries")
   @HiveField(15)
-  List<ProductionCountryVO> productionCountries;
+  List<ProductionCountryVO>? productionCountries;
 
   @JsonKey(name: "revenue")
   @HiveField(16)
-  double revenue;
+  double? revenue;
 
   @JsonKey(name: "runtime")
   @HiveField(17)
-  int runtime;
+  int? runtime;
 
   @JsonKey(name: "release_date")
   @HiveField(18)
-  String releaseDate;
+  String? releaseDate;
 
   @JsonKey(name: "spoken_languages")
   @HiveField(19)
-  List<SpokenLanguageVO> spokenLanguages;
+  List<SpokenLanguageVO>? spokenLanguages;
 
   @JsonKey(name: "status")
   @HiveField(20)
-  String status;
+  String? status;
 
   @JsonKey(name: "tagline")
   @HiveField(21)
-  String tagLine;
+  String? tagLine;
 
   @JsonKey(name: "title")
   @HiveField(22)
-  String title;
+  String? title;
 
   @JsonKey(name: "video")
   @HiveField(23)
-  bool video;
+  bool? video;
 
   @JsonKey(name: "vote_average")
   @HiveField(24)
-  double voteAverage;
+  double? voteAverage;
 
   @JsonKey(name: "vote_count")
   @HiveField(25)
-  int voteCount;
+  int? voteCount;
 
   @HiveField(26)
   bool isNowPlaying;
@@ -133,7 +133,7 @@ class MovieVO {
     this.genres,
     this.homepage,
     this.genreIds,
-    this.id,
+    required this.id,
     this.imdbId,
     this.originalLanguage,
     this.originalTitle,
@@ -152,9 +152,9 @@ class MovieVO {
     this.video,
     this.voteAverage,
     this.voteCount,
-    this.isNowPlaying,
-    this.isPopular,
-    this.isTopRated,
+    this.isNowPlaying = false,
+    this.isPopular = false,
+    this.isTopRated = false,
   });
 
   factory MovieVO.fromJson(Map<String, dynamic> json) =>

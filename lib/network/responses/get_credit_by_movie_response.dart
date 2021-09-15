@@ -6,10 +6,10 @@ part 'get_credit_by_movie_response.g.dart';
 @JsonSerializable()
 class GetCreditByMovieResponse {
   @JsonKey(name: "id")
-  int id;
+  int? id;
   
   @JsonKey(name: "cast")
-  List<CreditVO> cast;
+  List<CreditVO>? cast;
 
   GetCreditByMovieResponse({
     this.id,

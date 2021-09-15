@@ -11,15 +11,15 @@ part 'spoken_language_vo.g.dart';
 class SpokenLanguageVO {
   @JsonKey(name: "english_name")
   @HiveField(0)
-  String englishName;
+  String? englishName;
 
   @JsonKey(name: "iso_639_1")
   @HiveField(1)
-  String iso6391;
+  String? iso6391;
 
   @JsonKey(name: "name")
   @HiveField(2)
-  String name;
+  String? name;
 
   SpokenLanguageVO({
     this.englishName,

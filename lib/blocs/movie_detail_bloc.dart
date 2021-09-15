@@ -6,16 +6,16 @@ import 'package:movie_app/data/vos/movie_vo.dart';
 
 class MovieDetailBloc extends ChangeNotifier {
   /// states
-  MovieVO mMovie;
-  List<CreditVO> mActorList;
-  List<CreditVO> mCreatorList;
+  MovieVO? mMovie;
+  List<CreditVO>? mActorList;
+  List<CreditVO>? mCreatorList;
 
   /// model
   MovieModel mMovieModel = MovieModelImpl();
 
   MovieDetailBloc(int movieId) {
     /// network
-    mMovieModel.getMovieDetailById(movieId.toString()).then((value) {
+    mMovieModel.getMovieDetailById(movieId.toString())?.then((value) {
       mMovie = value;
       notifyListeners();
     });
@@ -26,10 +26,10 @@ class MovieDetailBloc extends ChangeNotifier {
       notifyListeners();
     });
 
-    mMovieModel.getCreditByMovieId(movieId.toString()).then((creditList) {
-      mActorList = creditList.where((element) => element.isActor()).toList();
+    mMovieModel.getCreditByMovieId(movieId.toString())?.then((creditList) {
+      mActorList = creditList?.where((element) => element.isActor()).toList();
       mCreatorList =
-          creditList.where((element) => element.isCreator()).toList();
+          creditList?.where((element) => element.isCreator()).toList();
       notifyListeners();
     });
   }

@@ -6,7 +6,7 @@ import 'package:movie_app/widgets/gradient_view.dart';
 import 'package:movie_app/widgets/play_button_view.dart';
 
 class BannerView extends StatelessWidget {
-  final MovieVO popularMovie;
+  final MovieVO? popularMovie;
 
   const BannerView(
     this.popularMovie,
@@ -19,7 +19,7 @@ class BannerView extends StatelessWidget {
         children: [
           Positioned.fill(
             child: BannerImageView(
-              imageUrl: popularMovie.posterPath,
+              imageUrl: popularMovie?.posterPath,
             ),
           ),
           Positioned.fill(
@@ -28,7 +28,7 @@ class BannerView extends StatelessWidget {
           Align(
             alignment: Alignment.bottomLeft,
             child: BannerTitleView(
-              movieName: popularMovie.title,
+              movieName: popularMovie?.title,
             ),
           ),
           Align(
@@ -42,7 +42,7 @@ class BannerView extends StatelessWidget {
 }
 
 class BannerTitleView extends StatelessWidget {
-  final String movieName;
+  final String? movieName;
 
   BannerTitleView({
     this.movieName,
@@ -57,7 +57,7 @@ class BannerTitleView extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(
-            movieName,
+            movieName ?? "-",
             style: TextStyle(
               fontWeight: FontWeight.w500,
               fontSize: TEXT_HEADING_1X,
@@ -79,7 +79,7 @@ class BannerTitleView extends StatelessWidget {
 }
 
 class BannerImageView extends StatelessWidget {
-  final String imageUrl;
+  final String? imageUrl;
 
   BannerImageView({
     this.imageUrl,

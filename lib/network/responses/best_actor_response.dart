@@ -6,10 +6,10 @@ part 'best_actor_response.g.dart';
 @JsonSerializable()
 class BestActorResponse {
   @JsonKey(name: "page")
-  int page;
+  int? page;
 
   @JsonKey(name: "results")
-  List<ActorVO> actorList;
+  List<ActorVO>? actorList;
 
   BestActorResponse({
     this.page,

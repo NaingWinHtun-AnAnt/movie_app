@@ -6,13 +6,13 @@ part 'movies_by_genre_id_response.g.dart';
 @JsonSerializable()
 class MoviesByGenreIdResponse {
   @JsonKey(name: "id")
-  String id;
+  String? id;
 
   @JsonKey(name: "items")
-  List<MovieVO> movies;
+  List<MovieVO>? movies;
 
   @JsonKey(name: "item_count")
-  int itemCount;
+  int? itemCount;
 
   MoviesByGenreIdResponse({
     this.id,
