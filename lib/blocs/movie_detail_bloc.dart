@@ -9,27 +9,37 @@ class MovieDetailBloc extends ChangeNotifier {
   MovieVO? mMovie;
   List<CreditVO>? mActorList;
   List<CreditVO>? mCreatorList;
+  List<MovieVO>? mRelatedMovies;
 
   /// model
   MovieModel mMovieModel = MovieModelImpl();
 
-  MovieDetailBloc(int movieId) {
-    /// network
-    mMovieModel.getMovieDetailById(movieId.toString())?.then((value) {
-      mMovie = value;
-      notifyListeners();
-    });
+  MovieDetailBloc(int movieId, {MovieModel? movieModel}) {
+    /// set movieModel with movieModelMock
+    if (movieModel != null) {
+      mMovieModel = movieModel;
+    }
 
     /// database
-    mMovieModel.getMovieDetailByIdFromDatabase(movieId).then((value) {
+    mMovieModel.getMovieDetailByIdFromDatabase(movieId).listen((value) {
       mMovie = value;
+      this.getRelatedMovies(mMovie?.genres?.first.id ?? 0);
       notifyListeners();
     });
 
-    mMovieModel.getCreditByMovieId(movieId.toString())?.then((creditList) {
+    mMovieModel
+        .getCreditByMovieIdFromDatabase(movieId.toString())
+        ?.listen((creditList) {
       mActorList = creditList?.where((element) => element.isActor()).toList();
       mCreatorList =
           creditList?.where((element) => element.isCreator()).toList();
+      notifyListeners();
+    });
+  }
+
+  void getRelatedMovies(int genreId) {
+    mMovieModel.getMovieListByGenreId(genreId.toString())?.then((value) {
+      mRelatedMovies = value;
       notifyListeners();
     });
   }

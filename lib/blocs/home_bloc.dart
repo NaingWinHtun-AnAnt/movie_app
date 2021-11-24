@@ -14,48 +14,62 @@ class HomeBloc extends ChangeNotifier {
   List<ActorVO>? mActorList;
   List<GenreVO>? mGenreList;
 
+  /// page
+  int pageForNowPlayingMovie = 1;
+
   /// model
   MovieModel mMovieModel = MovieModelImpl();
 
-  HomeBloc() {
+  HomeBloc({MovieModel? movieModel}) {
+    /// set mock model for test
+    if (movieModel != null) {
+      mMovieModel = movieModel;
+    }
+
     /// nowPlaying
-    mMovieModel.getNowPlayingMoviesFromDatabase().then((movieList) {
+    mMovieModel.getNowPlayingMoviesFromDatabase().listen((movieList) {
       mNowPlayingMovieList = movieList;
       notifyListeners();
     });
 
     /// popular
-    mMovieModel.getPopularMoviesFromDatabase().then((popularMovieList) {
+    mMovieModel.getPopularMoviesFromDatabase().listen((popularMovieList) {
       mPopularMovieList = popularMovieList;
       notifyListeners();
     });
 
     /// top rated
-    mMovieModel.getTopRatedMoviesFromDatabase().then((topRatedMovieList) {
+    mMovieModel.getTopRatedMoviesFromDatabase().listen((topRatedMovieList) {
       mTopRatedMovieList = topRatedMovieList;
       notifyListeners();
     });
 
     /// actors
-    mMovieModel.getActorFromDatabase().then((actorList) {
+    mMovieModel.getActorFromDatabase().listen((actorList) {
       mActorList = actorList;
       notifyListeners();
     });
 
     /// genre
-    mMovieModel.getGenreFromDatabase().then((genreList) {
+    mMovieModel.getGenreFromDatabase().listen((genreList) {
       mGenreList = genreList;
 
-      getMovieListByGenre(mGenreList?.first.id ?? 0);
+      if (mGenreList?.isNotEmpty ?? false)
+        onTapGenre(mGenreList?.first.id ?? 0);
 
       notifyListeners();
     });
   }
 
-  void getMovieListByGenre(int genreId) {
+  void onTapGenre(int genreId) {
     mMovieModel.getMovieListByGenreId(genreId.toString())?.then((value) {
       mMovieListByGenre = value;
       notifyListeners();
     });
+  }
+
+  void onNowPlayingMovieListEndReached() {
+    this.pageForNowPlayingMovie += 1;
+    mMovieModel.getNowPlayingMovies(pageForNowPlayingMovie);
   }
 }

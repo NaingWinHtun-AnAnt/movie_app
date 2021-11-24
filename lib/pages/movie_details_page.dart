@@ -9,6 +9,7 @@ import 'package:movie_app/resources/strings.dart';
 import 'package:movie_app/widgets/actors_and_creators_section_view.dart';
 import 'package:movie_app/widgets/gradient_view.dart';
 import 'package:movie_app/widgets/rating_view.dart';
+import 'package:movie_app/widgets/title_and_horizontal_movie_list_view.dart';
 import 'package:movie_app/widgets/title_text.dart';
 import 'package:provider/provider.dart';
 
@@ -32,8 +33,11 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
         body: Selector<MovieDetailBloc, MovieVO?>(
           selector: (context, bloc) => bloc.mMovie,
           builder: (BuildContext context, movie, Widget? child) {
-            return movie != null
-                ? Container(
+            return movie == null
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : Container(
                     color: HOME_SCREEN_BACKGROUND_COLOR,
                     child: CustomScrollView(
                       slivers: [
@@ -90,16 +94,43 @@ class _MovieDetailsPageState extends State<MovieDetailsPage> {
                                             actorList: creatorList,
                                           ),
                               ),
+                              SizedBox(
+                                height: MARGIN_LARGE,
+                              ),
+                              Selector<MovieDetailBloc, List<MovieVO>?>(
+                                selector: (BuildContext context,
+                                        MovieDetailBloc bloc) =>
+                                    bloc.mRelatedMovies,
+                                builder: (BuildContext context, relatedMovies,
+                                        Widget? child) =>
+                                    TitleAndHorizontalMovieListView(
+                                  MOVIE_DETAIL_SCREEN_RELATED_MOVIES,
+                                  (movieId) => _navigateToMovieDetailScreen(
+                                    context,
+                                    movieId,
+                                  ),
+                                  relatedMovies ?? [],
+                                  onListEndReached: () {},
+                                ),
+                              ),
                             ],
                           ),
                         ),
                       ],
                     ),
-                  )
-                : Center(
-                    child: CircularProgressIndicator(),
                   );
           },
+        ),
+      ),
+    );
+  }
+
+  void _navigateToMovieDetailScreen(BuildContext context, int movieId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => MovieDetailsPage(
+          movieId: movieId,
         ),
       ),
     );

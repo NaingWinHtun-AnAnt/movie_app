@@ -29,13 +29,14 @@ class CreditVOAdapter extends TypeAdapter<CreditVO> {
       character: fields[7] as String?,
       creditId: fields[8] as String?,
       order: fields[9] as int?,
+      movieId: fields[10] as String,
     );
   }
 
   @override
   void write(BinaryWriter writer, CreditVO obj) {
     writer
-      ..writeByte(12)
+      ..writeByte(13)
       ..writeByte(0)
       ..write(obj.adult)
       ..writeByte(1)
@@ -56,6 +57,8 @@ class CreditVOAdapter extends TypeAdapter<CreditVO> {
       ..write(obj.creditId)
       ..writeByte(9)
       ..write(obj.order)
+      ..writeByte(10)
+      ..write(obj.movieId)
       ..writeByte(11)
       ..write(obj.name)
       ..writeByte(12)

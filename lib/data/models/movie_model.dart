@@ -11,26 +11,29 @@ abstract class MovieModel {
 
   void getTopRatedMovies(int page);
 
-  Future<List<ActorVO>?>? getActor(int page);
+  void getActor(int page);
 
+  /// TODO(change return type to void after test. Future return type test automation.)
   Future<List<GenreVO>?>? getGenre();
 
   Future<List<MovieVO>?>? getMovieListByGenreId(String genreId);
 
-  Future<MovieVO?>? getMovieDetailById(String movieId);
-
   Future<List<CreditVO>?>? getCreditByMovieId(String movieId);
 
+  void getMovieDetailById(String movieId);
+
   /// database
-  Future<List<MovieVO>> getNowPlayingMoviesFromDatabase();
+  Stream<List<MovieVO>> getNowPlayingMoviesFromDatabase();
 
-  Future<List<MovieVO>> getPopularMoviesFromDatabase();
+  Stream<List<MovieVO>> getPopularMoviesFromDatabase();
 
-  Future<List<MovieVO>> getTopRatedMoviesFromDatabase();
+  Stream<List<MovieVO>> getTopRatedMoviesFromDatabase();
 
-  Future<List<ActorVO>> getActorFromDatabase();
+  Stream<List<ActorVO>> getActorFromDatabase();
 
-  Future<List<GenreVO>> getGenreFromDatabase();
+  Stream<List<GenreVO>> getGenreFromDatabase();
 
-  Future<MovieVO?> getMovieDetailByIdFromDatabase(int movieId);
+  Stream<List<CreditVO>?>? getCreditByMovieIdFromDatabase(String movieId);
+
+  Stream<MovieVO?> getMovieDetailByIdFromDatabase(int movieId);
 }

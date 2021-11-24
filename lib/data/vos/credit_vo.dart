@@ -5,7 +5,7 @@ import 'package:movie_app/persistence/hive_constants.dart';
 
 part 'credit_vo.g.dart';
 
-@JsonSerializable()
+@JsonSerializable(ignoreUnannotated: true)
 @HiveType(typeId: HIVE_TYPE_ID_CREDIT_VO, adapterName: "CreditVOAdapter")
 class CreditVO extends BaseActorVO {
   @JsonKey(name: "adult")
@@ -48,6 +48,9 @@ class CreditVO extends BaseActorVO {
   @HiveField(9)
   int? order;
 
+  @HiveField(10)
+  String movieId;
+
   CreditVO({
     this.adult,
     this.gender,
@@ -61,6 +64,7 @@ class CreditVO extends BaseActorVO {
     this.character,
     this.creditId,
     this.order,
+    this.movieId = "0",
   }) : super(
           name: name,
           profilePath: profilePath,
@@ -78,6 +82,17 @@ class CreditVO extends BaseActorVO {
   bool isCreator() {
     return knownForDepartment != KNOWN_FOR_DEPARTMENT_ACTING;
   }
+
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is CreditVO &&
+          runtimeType == other.runtimeType &&
+          id == other.id &&
+          movieId == other.movieId;
+
+  @override
+  int get hashCode => id.hashCode ^ movieId.hashCode;
 }
 
 const String KNOWN_FOR_DEPARTMENT_ACTING = "Acting";

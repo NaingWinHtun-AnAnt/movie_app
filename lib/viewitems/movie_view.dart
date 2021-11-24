@@ -25,19 +25,24 @@ class MovieView extends StatelessWidget {
             onTap: () {
               onTapMovie();
             },
-            child: Image.network(
-              "$IMAGE_BASE_URL${movie?.posterPath}",
+            child: FadeInImage.assetNetwork(
+              image: "$IMAGE_BASE_URL${movie?.posterPath}",
               height: MOVIE_LIST_ITEM_IMAGE_HEIGHT,
               fit: BoxFit.cover,
+              width: MOVIE_LIST_ITEM_IMAGE_WIDTH,
+              placeholder: 'lib/assets/movie.jpg',
             ),
           ),
           SizedBox(height: MARGIN_MEDIUM),
-          Text(
-            movie?.title ?? "",
-            style: TextStyle(
-              fontWeight: FontWeight.w600,
-              fontSize: TEXT_REGULAR_2X,
-              color: Colors.white,
+          GestureDetector(
+            onTap: () => onTapMovie(),
+            child: Text(
+              movie?.title ?? "",
+              style: TextStyle(
+                fontWeight: FontWeight.w600,
+                fontSize: TEXT_REGULAR_2X,
+                color: Colors.white,
+              ),
             ),
           ),
           SizedBox(height: MARGIN_MEDIUM),
